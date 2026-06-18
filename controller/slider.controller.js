@@ -1,7 +1,7 @@
 import { uploadFileCloudinary } from "../config/cloudinary.js";
 import { BadRequestError, NotFoundError } from "../middleware/error.middleware.js";
 import Slider from "../models/slider.models.js";
-
+import fs  from "fs";
 // create an slider 
 
 export const create_slider = async (req , res )=>{
@@ -140,6 +140,8 @@ export const update_slider = async (req, res) => {
             updateData,
             { new: true, runValidators: true }
         );
+      
+fs.unlinkSync(req.file.path);
 
         res.status(200).json({
             success: true,
@@ -174,7 +176,7 @@ export const delete_slider = async (req , res)=>{
         // await Promise.all(delete_promises);
 
         await Slider.findByIdAndDelete(id);
-
+fs.unlinkSync(req.file.path);
         res.status(200).json({
             success : true,
             message : "Slider is deleted"

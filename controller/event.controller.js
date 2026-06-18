@@ -1,7 +1,7 @@
 import { uploadFileCloudinary } from "../config/cloudinary.js";
 import { BadRequestError, NotFoundError } from "../middleware/error.middleware.js";
 import Event from "../models/events.models.js";
-
+import fs  from "fs";
 
 
 // create an event 
@@ -35,11 +35,12 @@ export const create_event = async (req , res)=>{
         img  : img_uri,
          country
             });
-
+            fs.unlinkSync(req.file.path);
             res.status(201).json({
                 success : true,
                 data : event,  
             })
+            
 
         }catch(err){
             throw err;
@@ -136,7 +137,7 @@ export const update_event = async (req , res)=>{
 
 
         const updated_event = await Event.findByIdAndUpdate(id , {update_data} , {new : true , runValidators : true});
-
+        fs.unlinkSync(req.file.path);
          res.status(200).json({
             success : true ,
             message : "Event is update",

@@ -2,6 +2,7 @@ import { uploadFileCloudinary } from "../config/cloudinary.js";
 import { BadRequestError, InternalServerError, NotFoundError } from "../middleware/error.middleware.js";
 import Post from "../models/post.models.js"
 import Category from "../models/category.models.js"
+import fs  from "fs";
 
 export const create_post = async (req , res)=>{
     const {title , slug   , admin , category , country } = req.body;
@@ -32,7 +33,7 @@ export const create_post = async (req , res)=>{
             category ,
             country,
         })
-
+fs.unlinkSync(req.file.path);
         res.status(201).json({  success : true , message : "Post is created !!!" , data : new_post})
 
     }catch (err){
@@ -137,6 +138,7 @@ export const update_post = async (req , res)=>{
         if(!post){
             throw new NotFoundError("Post not found");
         }
+        fs.unlinkSync(req.file.path);
 
         res.status(200).json({
             success : true,

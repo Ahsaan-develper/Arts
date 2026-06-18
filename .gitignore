@@ -32,5 +32,8 @@ Thumbs.db
 *.swo
 
 # Temporary files
+
 tmp/
 temp/
+/tmp
+public/temp
