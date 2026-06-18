@@ -21,7 +21,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // connect DB once (Vercel reuses warm instances)
-connectDB();
+app.use(async (req  , res , next)=>{
+  await connectDB();
+  next();
+})
 
 // refresh token
 app.use("/refresh", refresh_handler);
