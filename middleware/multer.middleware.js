@@ -1,5 +1,7 @@
 import multer from "multer";
 import fs from "fs";
+import dotenv from "dotenv";
+dotenv.config();
 
 const uploadDir = process.env.NODE_ENV === "production" ? "/tmp" : "./public/temp";
 
