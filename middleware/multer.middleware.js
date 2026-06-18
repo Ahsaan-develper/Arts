@@ -1,15 +1,8 @@
 import multer from "multer";
-import fs from "fs";
-import dotenv from "dotenv";
-dotenv.config();
+import os from "os";
 
-const uploadDir = process.env.NODE_ENV === "production" ? "/tmp" : "./public/temp";
-
-if (process.env.NODE_ENV !== "production") {
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-  }
-}
+// os.tmpdir() returns /tmp on Vercel/Linux and correct temp dir on Windows locally
+const uploadDir = os.tmpdir();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
