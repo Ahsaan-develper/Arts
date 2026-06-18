@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 import { connectDB } from "./config/db.js";
 import _config from "./config/config.js";
 import cookieParser from "cookie-parser";
@@ -21,8 +20,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Routes
+// connect DB once (Vercel reuses warm instances)
+connectDB();
+
+// refresh token
 app.use("/refresh", refresh_handler);
+
+// routes
 app.use("/user", user_router);
 app.use("/admin", admin_router);
 app.use("/posts", post_router);
@@ -34,15 +38,11 @@ app.use("/subscriber", subscriber_router);
 app.use("/tickets", ticket_router);
 app.use("/payments", payment_router);
 
-// Connect to DB (for serverless, do this per request or once)
-connectDB().catch(err => console.log(err.message));
-
-// ✅ Export for Vercel serverless
-export default app;
-
-// ✅ Only start server locally (not on Vercel)
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(_config.port, () => {
-        console.log("Server is running on port:", _config.port);
-    });
+// local dev only
+if (_config.env !== "production") {
+  app.listen(_config.port, () => {
+    console.log("Server is running on port:", _config.port);
+  });
 }
+
+export default app;
