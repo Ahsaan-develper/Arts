@@ -13,6 +13,7 @@ import { refresh_handler } from "./middleware/jwt.middleware.js";
 import subscriber_router from "./routes/subscriber.routes.js";
 import ticket_router from "./routes/tickets.routes.js";
 import payment_router from "./routes/payment.routes.js";
+// import { swaggerSpec, swaggerUi } from "./config/swagger.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // connect DB once (Vercel reuses warm instances)
 app.use(async (req  , res , next)=>{
   await connectDB();

@@ -23,7 +23,7 @@ export const create_post = async (req , res)=>{
         
         
 
-        const imgURI = await uploadFileCloudinary(req.file.path);
+        const imgURI = await uploadFileCloudinary(req.file.buffer, req.file.mimetype);
         const new_post = await Post.create({
             title,
             slug,
@@ -33,7 +33,7 @@ export const create_post = async (req , res)=>{
             category ,
             country,
         })
-fs.unlinkSync(req.file.path);
+// fs.unlinkSync(req.file.path);
         res.status(201).json({  success : true , message : "Post is created !!!" , data : new_post})
 
     }catch (err){
@@ -138,7 +138,7 @@ export const update_post = async (req , res)=>{
         if(!post){
             throw new NotFoundError("Post not found");
         }
-        fs.unlinkSync(req.file.path);
+        // fs.unlinkSync(req.file.path);
 
         res.status(200).json({
             success : true,
